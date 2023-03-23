@@ -1,0 +1,76 @@
+#include <iostream>
+#include <limits.h>
+#include <queue>
+#include <string.h>
+
+using namespace std;
+#define V 6
+
+bool bfs(int Sgraph[V][V], int s, int t, int p[]){
+	bool vsd[V];
+	memset(vsd, 0, sizeof(vsd));
+	queue<int> q;
+	q.push(s);
+	vsd[s] = true;
+	p[s] = -1;
+	while (!q.empty()) {
+		int u = q.front();
+		q.pop();
+
+		for (int v = 0; v < V; v++) {
+			if (vsd[v] == false && Sgraph[u][v] > 0) {
+				if (v == t) {
+					p[v] = u;
+					return true;
+				}
+				q.push(v);
+				p[v] = u;
+				vsd[v] = true;
+			}
+		}
+	}
+	return false;
+}
+
+int fordFulkerson(int graph[V][V], int s, int t){
+	int u, v;
+	int Sgraph[V][V];
+	for (u = 0; u < V; u++)
+		for (v = 0; v < V; v++)
+			Sgraph[u][v] = graph[u][v];
+	int p[V];
+	int max_flow = 0;
+	while (bfs(Sgraph, s, t, p)) {
+	    int path_flow=INT_MAX;Ford-Fulkerson
+		for (v = t; v != s; v = p[v]) {
+			u = p[v];
+			path_flow = min(path_flow, Sgraph[u][v]);
+		}
+		for (v = t; v != s; v = p[v]) {
+			u = p[v];
+			Sgraph[u][v] -= path_flow;
+			Sgraph[v][u] += path_flow;
+		}
+		max_flow += path_flow;
+	}
+	return max_flow;
+}
+
+int main(){
+	         int graph[V][V] = {
+             {0, 8, 0, 0, 3, 0},
+
+             {0, 0, 9, 0, 0, 0},
+
+             {0, 0, 0, 0, 7, 2},
+
+             {0, 0, 0, 0, 0, 5},
+
+             {0, 0, 7, 4, 0, 0},
+
+             {0, 0, 0, 0, 0, 0}
+
+         };
+	cout << "Maximum Flow: "<< fordFulkerson(graph, 0, 5);
+	return 0;
+}
