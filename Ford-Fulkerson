@@ -41,7 +41,7 @@ int fordFulkerson(int graph[V][V], int s, int t){
 	int p[V];
 	int max_flow = 0;
 	while (bfs(Sgraph, s, t, p)) {
-	    int path_flow=INT_MAX;Ford-Fulkerson
+	    int path_flow=INT_MAX;
 		for (v = t; v != s; v = p[v]) {
 			u = p[v];
 			path_flow = min(path_flow, Sgraph[u][v]);
