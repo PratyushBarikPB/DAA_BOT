@@ -1,0 +1,78 @@
+/*. Given the value of ‘n’ as input, write a recursive procedure to find all 
+solutions to place them on a nxn board such that they do not attack each 
+other*/
+
+
+
+
+
+#include<iostream>
+using namespace std;
+int arr1[10][10];
+
+void print(int n) {
+    for (int i = 0;i <= n-1; i++) {
+        for (int j = 0;j <= n-1; j++) {
+                cout <<arr1[i][j]<< " ";
+        }
+        cout<<endl;
+    }
+    cout<<endl;
+    cout<<endl;
+}
+
+bool check(int col, int row, int n) {
+  //check for same column
+    for (int i = 0; i < row; i++) {
+        if (arr1[i][col]) {
+            return false;
+        }
+    }
+    //check for upper left diagonal
+    for (int i = row,j = col;i >= 0 && j >= 0; i--,j--) {
+        if (arr1[i][j]) {
+            return false;
+        }
+    }
+    //check for upper right diagonal
+    for (int i = row, j = col; i >= 0 && j < n; j++, i--) {
+        if (arr1[i][j]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool ans(int n, int row) {
+    if (n == row) {
+        print(n);
+        return true;
+    }
+    bool res = false;
+    for (int i = 0;i <=n-1;i++) {
+        if (check(i, row, n)) {
+            arr1[row][i] = 1;
+            res = ans(n, row+1) || res;
+            arr1[row][i] = 0;
+        }
+    }
+    return res;
+}
+
+int main(){
+        int n;
+        cout<<"Enter the number of queen: "<<endl;
+        cin >> n;
+        for (int i = 0;i < n;i++) {
+            for (int j = 0;j < n;j++) {
+                arr1[i][j] = 0;
+            }
+        }
+        bool res = ans(n, 0);
+        if(res == false) {
+            cout << -1 << endl;
+        } else {
+            cout << endl;
+        }
+  return 0;
+}//Pratyush Barik
